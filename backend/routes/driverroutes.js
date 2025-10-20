@@ -1,11 +1,11 @@
 import express from 'express';
 // Correcting the model import path to ensure Node.js doesn't get confused
 import { Driver } from '../models/DriverModel.js'; 
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 // Logistics imports
 import { updateDriverLocation, findNearestDrivers } from '../controllers/logisticsController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { driverProtect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET || 'your_development_secret';
@@ -67,7 +67,7 @@ router.post('/register', async (req, res) => {
 // @desc    Upload documents (Vetting Phase 1)
 // @route   POST /api/driver/upload_doc
 // @access  Private (Driver only)
-router.post('/upload_doc', protect, async (req, res) => {
+router.post('/upload_doc', driverProtect, async (req, res) => {
     // This is a mock endpoint. In production, this would handle file uploads to S3/Cloud Storage.
     const { docType, docUrl } = req.body;
 
@@ -98,7 +98,7 @@ router.post('/upload_doc', protect, async (req, res) => {
 // @desc    Admin/System updates driver verification status (Vetting Phase 2)
 // @route   PUT /api/driver/update_verification
 // @access  Private/Admin (Should be protected by an isAdmin middleware)
-router.put('/update_verification', protect, async (req, res) => {
+router.put('/update_verification', driverProtect, async (req, res) => {
     // NOTE: This should be secured by Admin middleware in production.
     const { driverId, isVerified, isActive } = req.body;
 
@@ -125,12 +125,12 @@ router.put('/update_verification', protect, async (req, res) => {
 // @desc    Driver sends continuous location updates (Real-Time Phase)
 // @route   PUT /api/driver/location
 // @access  Private (Driver only)
-router.put('/location', protect, updateDriverLocation);
+router.put('/location', driverProtect, updateDriverLocation);
 
 // @desc    Search for nearby available drivers (Logistics Phase)
 // @route   GET /api/trips/search
 // @access  Private (User only)
-router.get('/search', protect, findNearestDrivers);
+router.get('/search', driverProtect, findNearestDrivers);
 
 
 export default router;

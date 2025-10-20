@@ -1,4 +1,4 @@
-import { Driver } from 'backend/models/DriverModel.js';
+import { Driver } from '../models/Drivermodel.js';
 
 // @desc    Update driver's current location (GeoJSON Point)
 // @route   PUT /api/driver/location
@@ -46,7 +46,7 @@ const updateDriverLocation = async (req, res) => {
 // @desc    Search for nearby, verified, and active drivers
 // @route   GET /api/trips/search
 // @access  Public (Trip Requester/User App)
-const searchNearbyDrivers = async (req, res) => {
+const findNearestDrivers = async (req, res) => {
     // Destructure query params
     const { latitude, longitude, maxDistanceKm = 50 } = req.query; // Default to 50km radius
 
@@ -100,4 +100,4 @@ const searchNearbyDrivers = async (req, res) => {
 };
 
 
-export { updateDriverLocation, searchNearbyDrivers };
+export { updateDriverLocation, findNearestDrivers };

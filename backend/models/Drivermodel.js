@@ -35,4 +35,5 @@ const DriverSchema = new mongoose.Schema({
 // Create a geospatial index on the 'location.coordinates' field
 DriverSchema.index({ 'location.coordinates': '2dsphere' });
 
-export const Driver = mongoose.model('Driver', DriverSchema);
+// ✅ CORRECT (Checks if model exists; if so, use existing one; otherwise, compile a new one)
+export const Driver = mongoose.models.Driver || mongoose.model('Driver', DriverSchema);

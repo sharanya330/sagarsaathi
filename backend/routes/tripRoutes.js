@@ -1,6 +1,6 @@
 import express from 'express';
 import { Trip } from '../models/TripModel.js';
-import { protect } from '../../middleware/authMiddleware.js'; // Assuming we create a separate user-protect middleware later
+import { userProtect } from '../middleware/authMiddleware.js'; // Assuming we create a separate user-protect middleware later
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ const router = express.Router();
 // @desc    Create a new trip request
 // @route   POST /api/trips
 // @access  Private (User must be logged in)
-router.post('/', protect, async (req, res) => {
+router.post('/', userProtect, async (req, res) => {
     // req.user is provided by the 'protect' middleware after authentication
     const { 
         pickUpName, pickUpCoords, dropOffName, dropOffCoords, 
@@ -53,7 +53,7 @@ router.post('/', protect, async (req, res) => {
 // @desc    Cancel a trip
 // @route   PUT /api/trips/:id/cancel
 // @access  Private (User or Driver who accepted)
-router.put('/:id/cancel', protect, async (req, res) => {
+router.put('/:id/cancel', userProtect, async (req, res) => {
     const tripId = req.params.id;
     const { cancellationReason } = req.body;
     
@@ -87,7 +87,7 @@ router.put('/:id/cancel', protect, async (req, res) => {
 // @desc    Get trip status by ID
 // @route   GET /api/trips/:id/status
 // @access  Private (User or Driver)
-router.get('/:id/status', protect, async (req, res) => {
+router.get('/:id/status', userProtect, async (req, res) => {
     try {
         const trip = await Trip.findById(req.params.id).select('-locationHistory'); // Exclude heavy history data
 
