@@ -1,7 +1,7 @@
 import express from 'express';
 // Correcting the model import path to ensure Node.js doesn't get confused
-import { Driver } from '../models/DriverModel.js'; 
-import bcrypt from 'bcrypt';
+import { Driver } from '../models/Drivermodel.js'; 
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 // Logistics imports
 import { updateDriverLocation, findNearestDrivers } from '../controllers/logisticsController.js';
@@ -18,7 +18,7 @@ const generateToken = (id) => {
 };
 
 // @desc    Register a new driver
-// @route   POST /api/auth/register
+// @route   POST /api/drivers/register
 // @access  Public
 router.post('/register', async (req, res) => {
     const { name, email, phone, password } = req.body;
@@ -132,5 +132,27 @@ router.put('/location', driverProtect, updateDriverLocation);
 // @access  Private (User only)
 router.get('/search', driverProtect, findNearestDrivers);
 
+// @desc    Authenticate driver & get token
+// @route   POST /api/drivers/login
+// @access  Public
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const driver = await Driver.findOne({ email }).select('+password');
+    if (driver && (await bcrypt.compare(password, driver.password))) {
+      return res.json({
+        _id: driver._id,
+        name: driver.name,
+        email: driver.email,
+        phone: driver.phone,
+        token: generateToken(driver._id),
+      });
+    }
+    return res.status(401).json({ message: 'Invalid email or password' });
+  } catch (e) {
+    console.error('Driver login error:', e);
+    return res.status(500).json({ message: 'Server error during login.' });
+  }
+});
 
 export default router;

@@ -1,0 +1,59 @@
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+
+// Local Imports - CRITICAL: Ensure these files exist and use 'export default'
+import connectDB from './config/db.js';
+import userRoutes from '../routes/userRoutes.js'; 
+import driverRoutes from '../routes/driverroutes.js';
+import tripRoutes from '../routes/tripRoutes.js';
+
+// Load environment variables
+dotenv.config(); 
+
+// Connect to Database
+connectDB();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// --- CORS Configuration (Fixes the frontend registration issue) ---
+const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000']; 
+const corsOptions = {
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl) or if the origin is in our allowed list
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Allow cookies and auth headers to be sent
+    optionsSuccessStatus: 204
+};
+app.use(cors(corsOptions));
+// ------------------------------------------------------------------
+
+// Body parser middleware (allows us to accept JSON data)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// --- Routes ---
+// The path must match the API_URL used in your frontend: http://localhost:5000/api/users/register
+app.use('/api/users', userRoutes); 
+app.use('/api/drivers', driverRoutes);
+app.use('/api/trips', tripRoutes);
+
+// Basic check route
+app.get('/', (req, res) => res.send('Sagarsaathi API is running...'));
+
+
+// --- Error Handling Middleware (Recommended for Express) ---
+app.use((err, req, res, next) => {
+  console.error('Express error:', err);
+  const status = res.statusCode && res.statusCode !== 200 ? res.statusCode : 500;
+  res.status(status).json({ message: err.message || 'Server error' });
+});
+
+app.listen(PORT, () => console.log(`Sagarsaathi Backend Server running on port ${PORT}`));

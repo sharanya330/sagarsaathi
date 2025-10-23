@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-
-// Base URL for the backend API
-const API_URL = 'http://localhost:5000/api/users/login'; 
+import api from '../utils/api';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const LoginUser = () => {
+    const navigate = useNavigate();
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -31,10 +32,12 @@ const LoginUser = () => {
                 },
             };
 
-            const response = await axios.post(API_URL, formData, config);
+const response = await api.post('/api/users/login', formData, config);
 
             // Assuming successful login returns a token
-            if (response.data.token) {
+if (response.data.token) {
+                login(response.data.token, { _id: response.data._id, name: response.data.name, email: response.data.email }, 'user');
+                navigate('/dashboard');
                 // In a real app, save the token to localStorage or Context
                 console.log('Login Successful! Token:', response.data.token);
                 setMessage('Login successful! Welcome back.');

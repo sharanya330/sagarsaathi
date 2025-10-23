@@ -1,33 +1,33 @@
 {
-  "name": "sagarsaathi-backend",
+  "name": "sagarsaathi-server",
   "version": "1.0.0",
-  "description": "MERN Stack Backend for Sagarsaathi Trip Vetting & Tracking Platform",
-  "main": "server.js",
+  "description": "Sagarsaathi MERN Backend API",
+  "main": "server/server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js"
   },
   "keywords": [
     "mern",
-    "node",
     "express",
     "mongodb",
-    "socket.io"
+    "sagarsaathi"
   ],
-  "author": "",
+  "author": "Sharanya",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
-    "http": "0.0.1-security",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.3.1",
-    "socket.io": "^4.7.5"
+    "mongoose": "^8.4.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.2"
   }
 }

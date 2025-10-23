@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { Driver } from '../models/DriverModel.js';
-import { User } from '../models/UserModel.js'; // Added for User protection
+import { Driver } from '../models/Drivermodel.js';
+import { User } from '../models/usermodel.js'; // Added for User protection
 
 // Middleware to protect DRIVER routes (only allows authenticated Drivers)
 const driverProtect = async (req, res, next) => { // <-- RENAMED from 'protect'

@@ -1,7 +1,7 @@
 import express from 'express';
-import { User } from '../models/UserModel.js';
+import { User } from '../models/usermodel.js';
 import asyncHandler from 'express-async-handler';
-import bcrypt from 'bcrypt'; 
+import bcrypt from 'bcryptjs'; 
 import jwt from 'jsonwebtoken';
 
 // --- FIX: Define router here ---
@@ -85,5 +85,18 @@ router.post('/login', asyncHandler(async (req, res) => {
     }
 }));
 
+// @desc    Get current user profile
+// @route   GET /api/users/me
+// @access  Private
+import { userProtect } from '../middleware/authMiddleware.js';
+router.get('/me', userProtect, asyncHandler(async (req, res) => {
+    // userProtect attaches req.user without password
+    res.json({
+        _id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        phone: req.user.phone,
+    });
+}));
 
 export default router;

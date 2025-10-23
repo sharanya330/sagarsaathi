@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-
-// Base URL for the backend API
-const API_URL = 'http://localhost:5000/api/users/register'; 
+import api from '../utils/api';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const RegisterUser = () => {
+    const navigate = useNavigate();
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -42,10 +43,12 @@ const RegisterUser = () => {
             // Destructure data to send, excluding confirmPassword
             const { confirmPassword, ...dataToSend } = formData;
 
-            const response = await axios.post(API_URL, dataToSend, config);
+const response = await api.post('/api/users/register', dataToSend, config);
 
             // Assuming successful registration returns a token
-            if (response.data.token) {
+if (response.data.token) {
+                login(response.data.token, { _id: response.data._id, name: response.data.name, email: response.data.email, phone: response.data.phone }, 'user');
+                navigate('/dashboard');
                 // In a real app, save the token to localStorage/Context and redirect
                 console.log('Registration Successful! Token:', response.data.token);
                 setMessage('Registration successful! Redirecting to login...');
