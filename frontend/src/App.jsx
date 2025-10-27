@@ -10,7 +10,11 @@ import DriverDashboard from './pages/DriverDashboard';
 import CreateTrip from './pages/CreateTrip';
 import MyTrips from './pages/MyTrips';
 import DriverTrips from './pages/DriverTrips';
+import Track from './pages/Track';
+import PublicTrack from './pages/PublicTrack';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 const styles = {
   header: {
@@ -58,12 +62,17 @@ return (
       
       <main>
         <Routes>
+          {/* Admin */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/login" element={<LoginUser />} />
           <Route path="/dashboard" element={<ProtectedRoute role="user"><Dashboard /></ProtectedRoute>} />
           <Route path="/create-trip" element={<ProtectedRoute role="user"><CreateTrip /></ProtectedRoute>} />
           <Route path="/trips/my" element={<ProtectedRoute role="user"><MyTrips /></ProtectedRoute>} />
+          <Route path="/track/:id" element={<ProtectedRoute role="user"><Track /></ProtectedRoute>} />
+          <Route path="/share/:token" element={<PublicTrack />} />
           <Route path="/driver/register" element={<DriverRegister />} />
           <Route path="/driver/login" element={<DriverLogin />} />
           <Route path="/driver/dashboard" element={<ProtectedRoute role="driver"><DriverDashboard /></ProtectedRoute>} />

@@ -71,4 +71,23 @@ const admin = (req, res, next) => {
     }
 };
 
-export { driverProtect, userProtect, admin }; // <-- EXPORTS UPDATED
+// Admin bearer token protector using role claim
+const adminProtect = (req, res, next) => {
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (decoded && decoded.role === 'admin') {
+        req.admin = { id: decoded.id || 'admin', email: decoded.email || null };
+        return next();
+      }
+      return res.status(401).json({ message: 'Not authorized as admin' });
+    } catch (e) {
+      return res.status(401).json({ message: 'Not authorized, token failed' });
+    }
+  }
+  return res.status(401).json({ message: 'Not authorized, no token provided' });
+};
+
+export { driverProtect, userProtect, admin, adminProtect };

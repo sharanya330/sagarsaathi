@@ -28,7 +28,29 @@ const DriverSchema = new mongoose.Schema({
         type: { type: String, enum: ['Point'], default: 'Point' },
         coordinates: { type: [Number], index: '2dsphere' } // [longitude, latitude]
     },
-    lastUpdated: { type: Date, default: Date.now }
+    lastUpdated: { type: Date, default: Date.now },
+
+    // D. Vehicle Information
+    vehicleType: {
+        type: String,
+        enum: ['SEDAN', 'SUV', 'INNOVA', 'TEMPO_TRAVELLER', 'BUS'],
+        default: 'SEDAN'
+    },
+    capacity: { type: Number, default: 4 }, // Number of passengers the vehicle can hold
+    vehicleNumber: { type: String, trim: true },
+    vehicleModel: { type: String, trim: true },
+
+    // E. Availability Calendar
+    availabilityRanges: [{
+        startDate: { type: Date, required: true },
+        endDate: { type: Date, required: true },
+        isAvailable: { type: Boolean, default: true },
+        reason: { type: String } // Optional reason for unavailability
+    }],
+
+    // OTP login (optional fields)
+    otpCode: { type: String, default: null },
+    otpExpiresAt: { type: Date, default: null }
 
 }, { timestamps: true });
 

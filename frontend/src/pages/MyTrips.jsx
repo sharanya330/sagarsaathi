@@ -31,6 +31,16 @@ export default function MyTrips(){
     }
   };
 
+  const shareLink = async (id) => {
+    try{
+      const { data } = await api.post(`/api/trips/${id}/share`);
+      const url = `${window.location.origin}/share/${data?.token}`;
+      window.prompt('Share this public tracking link:', url);
+    }catch(e){
+      alert(e?.response?.data?.message || 'Failed to generate link');
+    }
+  };
+
   return (
     <div style={{maxWidth:800, margin:'20px auto', padding:20}}>
       <h2>My Trips</h2>
@@ -41,6 +51,12 @@ export default function MyTrips(){
               <span><strong>{t.status}</strong> — {t.pickUpLocation?.name} → {t.dropOffLocation?.name} &nbsp; <small>(id: {t._id})</small></span>
               {t.status === 'REQUESTED' && (
                 <button onClick={() => cancelTrip(t._id)} style={{marginLeft:8}}>Cancel</button>
+              )}
+              {(t.status === 'ON_TRIP' || t.status === 'SOS_ACTIVE' || t.status === 'ACCEPTED') && (
+                <>
+                  <a href={`/track/${t._id}`} style={{marginLeft:8}}>Track</a>
+                  <button onClick={()=>shareLink(t._id)} style={{marginLeft:8}}>Share link</button>
+                </>
               )}
             </li>
           ))}

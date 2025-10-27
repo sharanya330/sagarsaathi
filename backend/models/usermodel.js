@@ -23,7 +23,10 @@ const UserSchema = new mongoose.Schema({
         type: String, 
         required: true, 
         select: false // Do not return password hash by default
-    }
+    },
+    // OTP login (optional fields)
+    otpCode: { type: String, default: null },
+    otpExpiresAt: { type: Date, default: null }
 }, { timestamps: true });
 
 // Middleware to hash password before saving
