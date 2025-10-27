@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import RegisterUser from './pages/RegisterUser';
 import LoginUser from './pages/LoginUser'; // New Import
@@ -15,6 +15,7 @@ import PublicTrack from './pages/PublicTrack';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import SplashScreen from './components/SplashScreen';
 
 const styles = {
   header: {
@@ -32,8 +33,18 @@ const styles = {
     fontSize: '16px',
   },
   logo: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  logoImg: {
+    height: '50px',
+    width: 'auto',
+  },
+  logoText: {
     fontSize: '24px',
     fontWeight: 'bold',
+    color: 'white',
   }
 };
 
@@ -45,11 +56,33 @@ function ProtectedRoute({ children, role: requiredRole }) {
 }
 
 function App() {
-return (
+  const [showSplash, setShowSplash] = useState(true);
+
+  // Check if user has seen splash screen in this session
+  useEffect(() => {
+    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
+    if (hasSeenSplash) {
+      setShowSplash(false);
+    }
+  }, []);
+
+  const handleSplashComplete = () => {
+    sessionStorage.setItem('hasSeenSplash', 'true');
+    setShowSplash(false);
+  };
+
+  if (showSplash) {
+    return <SplashScreen onComplete={handleSplashComplete} />;
+  }
+
+  return (
     <AuthProvider>
     <Router>
       <header style={styles.header}>
-        <div style={styles.logo}>SagarSaathi</div>
+        <div style={styles.logo}>
+          <img src="/assets/logo.png" alt="SagarSaathi Logo" style={styles.logoImg} />
+          <span style={styles.logoText}>SagarSaathi</span>
+        </div>
         <nav>
           <Link to="/" style={styles.navLink}>Home</Link>
           <Link to="/register" style={styles.navLink}>Register</Link>
