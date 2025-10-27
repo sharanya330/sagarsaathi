@@ -32,7 +32,8 @@
   width: 90%;
   height: auto;
   margin-bottom: 30px;
-  border-radius: 20px;
+  border: none;
+  background: transparent;
 }
 
 .splash-logo {
