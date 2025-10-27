@@ -1,117 +1,439 @@
-# SagarSaathi
+# SagarSaathi 🚗🌴
 
 **Tagline: Where every journey feels like home**
 
-## 1\. Project Overview
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18.2-blue.svg)](https://reactjs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-7.0-green.svg)](https://www.mongodb.com/)
 
-SagarSaathi is a high-trust, peer-to-peer (P2P) platform designed for **reliable, multi-day, long-distance outstation travel** in India. It connects families and groups with pre-vetted owner-drivers of large vehicles (e.g., Innova, Supro) for custom itineraries.
+SagarSaathi is a high-trust, peer-to-peer platform designed for **reliable, multi-day, long-distance outstation travel** in India. We connect families and groups with pre-vetted owner-drivers of large vehicles for custom itineraries, with a strong focus on **safety and security**.
 
-Unlike local taxi aggregators, the core value of SagarSaathi is built on a **Security-First Model**, powered by digital driver vetting and real-time safety features.
+![SagarSaathi Logo](frontend/public/assets/logo.png)
 
-### Problem Solved
+## 🌟 Features
 
-  * **For Passengers:** High operational risk and lack of verifiable trust when booking multi-day, outstation trips from unverified local operators.
-  * **For Drivers:** Unpredictable income and low-value trip leads from local sources.
+### For Passengers
+- ✅ **Verified Drivers** - All drivers thoroughly vetted with document verification
+- 📍 **Live Trip Tracking** - Real-time GPS tracking with shareable links
+- 🚨 **SOS Emergency Button** - Instant alerts to support team
+- 🗺️ **Custom Itineraries** - Multi-stop, multi-day trip planning
+- 💰 **Transparent Pricing** - No hidden charges
+- 📱 **Trip Sharing** - Share your journey with family for peace of mind
 
-### Core MVP Features
+### For Drivers
+- 📋 **Easy Registration** - Simple onboarding with document upload
+- 💼 **Steady Income** - Access to quality long-distance trips
+- 📊 **Availability Management** - Control your schedule
+- ⭐ **Build Reputation** - Verified badge system
+- 💳 **Lead Fee System** - Pay-to-reveal contact for qualified trips
 
-The MVP focuses on establishing the secure authentication, driver vetting, and the GeoJSON-based real-time tracking foundation.
+### For Admins
+- 🔐 **Driver Verification** - Review and approve driver documents
+- 📱 **SOS Monitoring** - Real-time emergency trip oversight
+- 📊 **Analytics Dashboard** - Track active trips and transactions
+- 🚫 **Strike System** - Automated penalty for cancellations
 
-| Feature Category | User App (Passenger) | Driver App (Supply) |
-| :--- | :--- | :--- |
-| **Authentication** | Secure User Registration/Login (JWT Auth). | Secure Driver Registration/Login (JWT Auth). |
-| **Vetting** | View driver's verification status (e.g., "Verified Driver"). | Mandatory Document Upload (License, RC, Permit) and Live Selfie. |
-| **Core Logistics** | Custom Trip Request Form (Origin, Multi-Stops, Dates). | Real-Time Driver Availability/Location Update (GeoJSON). |
-| **Safety** | Live Trip Tracking Map with shareable link. **In-App SOS Button**. | Continuous GPS Data Feed (via Socket.IO/GeoJSON). |
+## 🛠️ Tech Stack
 
-## 2\. Technical Stack (MERN)
+### Backend
+- **Node.js** 18+ with Express.js
+- **MongoDB** with GeoJSON for location services
+- **JWT** authentication with role-based access (user/driver/admin)
+- **Mongoose** ODM with 2dsphere indexes
+- **ES Modules** (type: module)
 
-This project is built using the MERN stack for maximum scalability and customizability, leveraging MongoDB's powerful GeoJSON capabilities for location data.
+### Frontend
+- **React** 18.2 (Create React App)
+- **React Router** for navigation
+- **Axios** for API calls
+- **Socket.io Client** (ready for real-time features)
+- **Responsive Design** for mobile/tablet/desktop
 
-| Component | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Frontend (R)** | **React** (or React Native for mobile) | User Interface for both Passenger and Driver portals. |
-| **Backend (E, N)** | **Node.js** & **Express.js** | Core API logic, authentication, and handling of external API calls (BGV, Communication). |
-| **Database (M)** | **MongoDB** | Data storage, crucial for handling **GeoJSON** for location querying and indexing. |
-| **Real-Time** | **Socket.IO** | Enables persistent, bidirectional communication for **Live Location Tracking** and SOS alerts. |
-| **Cloud** | **Firebase Storage** (or AWS S3) | Hosting for mandatory driver-uploaded documents (License, RC, etc.). |
-| **External APIs** | **Exotel** (or Twilio), **Google Maps Platform** | OTP/Call Masking and Geospatial mapping/routing services. |
+### Optional Integrations
+- **AWS S3** - Document storage
+- **Twilio** - SMS and call masking
+- **Stripe** - Payment processing
+- **Google Maps API** - Mapping and routing
 
-## 3\. Project Structure
+### DevOps
+- **Docker** & Docker Compose
+- **PM2** process management
+- **Nginx** reverse proxy
+- **MongoDB Atlas** support
 
-The codebase follows a standard MERN stack structure:
-
-```
-Sagarsaathi/
-├── server/               # ⇐ The Node/Express Backend (Formerly 'backend')
-│   ├── config/           # Database and environment configurations
-│   ├── controllers/      # Business logic for all API endpoints
-│   ├── middleware/       # JWT authentication and error handling
-│   ├── models/           # Mongoose schemas (User, Driver, Trip, etc.)
-│   ├── routes/           # Express routers (driverRoutes, userRoutes)
-│   └── server.js         # Main server entry point
-└── frontend/             # ⇐ The React Frontend Application
-    ├── public/
-    ├── src/
-    │   ├── components/
-    │   ├── pages/        # Home, Register, Login, TripRequest
-    │   └── App.js
-```
-
-## 4\. Local Setup and Installation
-
-Follow these steps to get the SagarSaathi MVP running on your local machine.
+## 🚀 Quick Start
 
 ### Prerequisites
+- Node.js 18+ installed
+- MongoDB running (local or Atlas)
+- npm or yarn package manager
 
-  * Node.js (v18+)
-  * MongoDB (Local or MongoDB Atlas Cluster)
+### Local Development
 
-### 4.1. Clone the Repository
-
+#### 1. Clone the Repository
 ```bash
-git clone [YOUR_GITHUB_REPO_URL] Sagarsaathi
-cd Sagarsaathi
+git clone https://github.com/sharanya330/sagarsaathi.git
+cd sagarsaathi
 ```
 
-### 4.2. Environment Variables
-
-Create a file named `.env` in the root of the **`server`** directory (`Sagarsaathi/server/.env`) and populate it with your configuration:
-
+#### 2. Backend Setup
+```bash
+cd backend
+npm install
+cp ../.env.example .env
+# Edit .env with your configuration
+npm run server  # Development with nodemon
 ```
-# MongoDB
-MONGO_URI=your_mongodb_connection_string_here
+
+#### 3. Frontend Setup
+```bash
+cd frontend
+npm install
+npm start  # Runs on http://localhost:3000
+```
+
+#### 4. Access the Application
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:5000
+
+### Environment Variables
+
+Create a `.env` file in the `backend` directory:
+
+```env
+# Database
 PORT=5000
+MONGODB_URI=mongodb://127.0.0.1:27017/sagarsaathi_db
 
-# JWT Token Secret
-JWT_SECRET=your_super_secret_key
+# Authentication
+JWT_SECRET=your_super_secret_key_here
 JWT_EXPIRES_IN=30d
 
-# External Services (Examples)
-EXOTEL_SID=your_exotel_sid
-GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+# Admin Access
+ADMIN_EMAIL=admin@sagarsaathi.com
+ADMIN_PASSWORD=your_secure_password
+
+# Business Logic
+LEAD_FEE_AMOUNT=99
+PUBLIC_TRACK_TTL_HOURS=48
+CANCEL_STRIKE_HOURS=24
+
+# Frontend URL
+FRONTEND_BASE_URL=http://localhost:3000
+
+# Optional: Payment Integration
+STRIPE_SECRET_KEY=sk_test_xxx
+
+# Optional: Communication Services
+TWILIO_ACCOUNT_SID=your_twilio_sid
+TWILIO_AUTH_TOKEN=your_twilio_token
+TWILIO_FROM=your_twilio_number
+
+# Optional: Cloud Storage
+AWS_REGION=ap-south-1
+AWS_ACCESS_KEY_ID=your_aws_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret
+AWS_S3_BUCKET=sagarsaathi-documents
+
+# Optional: Maps
+GOOGLE_MAPS_API_KEY=your_google_maps_key
 ```
 
-### 4.3. Backend Setup & Launch
+## 🐳 Docker Deployment
 
+### Quick Deploy
 ```bash
-cd server
-npm install
-npx nodemon server.js
+# Build and start all services
+docker compose -f docker-compose.simple.yml up -d --build
+
+# View logs
+docker compose -f docker-compose.simple.yml logs -f
+
+# Stop services
+docker compose -f docker-compose.simple.yml down
 ```
 
-  * **Expected Output:** "MongoDB Connected Successfully" and "Sagarsaathi Backend Server running on port 5000"
+### Services Included
+- **MongoDB** - Database (Port 27017)
+- **Backend** - API Server (Port 5001)
+- **Frontend** - React App (Port 3000)
 
-### 4.4. Frontend Setup & Launch
+See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for production deployment options.
 
-Open a **separate terminal** window.
+## 📁 Project Structure
 
+```
+sagarsaathi/
+├── backend/                    # Node.js/Express API
+│   ├── controllers/           # Business logic
+│   ├── middleware/            # Auth and validation
+│   ├── models/                # Mongoose schemas
+│   ├── routes/                # Express routes
+│   ├── services/              # External integrations
+│   └── server/
+│       └── server.js         # Express app entry point
+├── frontend/                  # React application
+│   ├── public/
+│   │   └── assets/           # Logo and animations
+│   └── src/
+│       ├── components/       # Reusable components
+│       ├── pages/           # Route pages
+│       ├── context/         # Global state
+│       ├── styles/          # Component CSS
+│       └── App.jsx          # Main app component
+├── docker-compose.yml       # Full production stack
+├── docker-compose.simple.yml # Simplified deployment
+├── Dockerfile               # Multi-stage backend build
+├── deploy.sh               # Deployment automation script
+├── ecosystem.config.js     # PM2 configuration
+└── README.md               # This file
+```
+
+## 🔐 Authentication & Authorization
+
+### Three User Roles
+
+1. **Users (Passengers)**
+   - Register and login with email/password
+   - Create and manage trip requests
+   - Track trips in real-time
+   - Trigger SOS alerts
+
+2. **Drivers**
+   - Register with vehicle details
+   - Upload verification documents
+   - Accept/reject trip requests
+   - Update real-time location
+   - Pay lead fee to reveal contact
+
+3. **Admins**
+   - Verify driver documents
+   - Monitor active trips
+   - Handle SOS emergencies
+   - Manage strike penalties
+   - View transactions
+
+### JWT Token Flow
+- Tokens issued on successful login
+- Bearer token authentication
+- Role-based route protection
+- Middleware: `userProtect`, `driverProtect`, `adminProtect`
+
+## 🗺️ GeoJSON & Location Services
+
+### MongoDB Geospatial Indexes
+```javascript
+// 2dsphere index on driver location
+DriverSchema.index({ 'location.coordinates': '2dsphere' });
+
+// 2dsphere index on trip pickup
+TripSchema.index({ 'pickUpLocation.coords.coordinates': '2dsphere' });
+```
+
+### Location Storage Format
+```javascript
+{
+  type: 'Point',
+  coordinates: [longitude, latitude] // [77.5946, 12.9716]
+}
+```
+
+### Use Cases
+- Find nearby available drivers
+- Calculate trip distances
+- Store location history
+- Enable live tracking
+
+## 📊 Trip Lifecycle
+
+```
+REQUESTED → ACCEPTED → ON_TRIP → COMPLETED
+                    ↓
+                CANCELLED / SOS_ACTIVE
+```
+
+### Status Transitions
+1. **REQUESTED** - User creates trip, visible to drivers
+2. **ACCEPTED** - Driver accepts (lead fee paid)
+3. **ON_TRIP** - Driver starts journey
+4. **COMPLETED** - Driver marks trip complete
+5. **CANCELLED** - User/driver cancels (strike penalty applies)
+6. **SOS_ACTIVE** - Emergency alert triggered
+
+## 🚨 Safety Features
+
+### SOS System
+- In-app emergency button
+- Instant status change to `SOS_ACTIVE`
+- Admin dashboard alert
+- Location snapshot captured
+- Support team notification
+
+### Driver Vetting
+- Document upload (license, RC, permit)
+- Manual admin review
+- Verified badge system
+- Strike-based penalties
+- Suspension after 3 strikes
+
+### Trip Safety
+- Live GPS tracking
+- Public shareable links (48h TTL)
+- Location history logging
+- Call masking (Twilio)
+- Trip completion verification
+
+## 🧪 Testing
+
+### Frontend Tests (Jest/React Testing Library)
 ```bash
-cd ../frontend
-npm install
-npm start
+cd frontend
+
+# Run all tests
+npm test
+
+# Run specific test file
+npm test -- --testPathPattern=YourFileName
+
+# Run tests matching name
+npm test -- -t "Your test name"
+
+# Coverage report
+npm test -- --coverage
 ```
 
-  * **Expected Output:** Application launches in your browser at `http://localhost:3000`.
+### Backend Tests
+Currently not implemented. Contribution welcome!
 
-http://googleusercontent.com/memory_tool_content/0
+## 📝 API Documentation
+
+### Base URL
+```
+http://localhost:5000/api
+```
+
+### Key Endpoints
+
+#### Users
+- `POST /users/register` - User registration
+- `POST /users/login` - User login
+- `GET /users/profile` - Get user profile (protected)
+
+#### Drivers
+- `POST /drivers/register` - Driver registration
+- `POST /drivers/login` - Driver login
+- `PUT /drivers/location` - Update location (protected)
+- `GET /drivers/trips/requested` - View available trips
+
+#### Trips
+- `POST /trips` - Create trip request (user)
+- `GET /trips/my` - Get user's trips (user)
+- `GET /trips/assigned` - Get driver's trips (driver)
+- `PATCH /trips/:id/accept` - Accept trip (driver)
+- `PATCH /trips/:id/start` - Start trip (driver)
+- `PATCH /trips/:id/end` - End trip (driver)
+- `POST /trips/:id/sos` - Trigger SOS (driver)
+- `GET /trips/public/:token/last_location` - Public tracking
+
+#### Admin
+- `POST /admin/login` - Admin login
+- `GET /admin/drivers` - List all drivers
+- `PUT /admin/drivers/:id/verify` - Verify driver
+- `GET /admin/trips/active` - Active trips
+- `GET /admin/trips/sos` - SOS trips
+
+## 🎨 Branding
+
+### Logo
+- Static logo: `frontend/public/assets/logo.png`
+- Animated logo: `frontend/public/assets/logo-animation.mp4`
+- Splash screen displays on app launch
+- Session-based (shows once per session)
+
+### Color Palette
+- Primary: `#e8a537` (Yellow/Orange)
+- Secondary: `#2c3e50` (Dark Blue)
+- Background: `#f5e6d3` → `#e8d4b8` (Gradient)
+
+### Tagline
+*"Where every journey feels like home"*
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### Development Guidelines
+- Follow existing code style
+- Add comments for complex logic
+- Update documentation
+- Test your changes
+- Keep commits atomic
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Team
+
+- **Developer**: Sharanya
+- **GitHub**: [@sharanya330](https://github.com/sharanya330)
+
+## 📞 Support
+
+For issues and questions:
+- GitHub Issues: [sagarsaathi/issues](https://github.com/sharanya330/sagarsaathi/issues)
+- Email: admin@sagarsaathi.com
+
+## 🗺️ Roadmap
+
+### Current Features (MVP)
+- ✅ User/Driver/Admin authentication
+- ✅ Trip creation and management
+- ✅ Live GPS tracking
+- ✅ SOS emergency system
+- ✅ Driver verification
+- ✅ Public trip sharing
+- ✅ Lead fee payment gating
+- ✅ Animated splash screen
+- ✅ Docker deployment
+
+### Planned Features
+- [ ] Real-time chat between user and driver
+- [ ] In-app payment integration (Stripe/Razorpay)
+- [ ] Push notifications
+- [ ] Driver rating system
+- [ ] Trip history and analytics
+- [ ] Multi-language support
+- [ ] Mobile app (React Native)
+- [ ] Route optimization
+- [ ] Weather integration
+- [ ] Referral system
+
+## 📚 Additional Documentation
+
+- [WARP.md](WARP.md) - AI development guide
+- [DEPLOYMENT.md](DEPLOYMENT.md) - Detailed deployment guide
+- [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) - Production deployment options
+- [LOGO_IMPLEMENTATION.md](LOGO_IMPLEMENTATION.md) - Logo and branding guide
+- [DEPLOYED.md](DEPLOYED.md) - Current deployment status
+
+## 🙏 Acknowledgments
+
+- Create React App for frontend scaffolding
+- MongoDB for powerful geospatial features
+- Express.js for robust API framework
+- Docker for containerization
+- ngrok for easy public URL testing
+
+---
+
+**Made with ❤️ for safe and comfortable travel**
+
+*SagarSaathi - Your trusted companion for long journeys* 🚗🌴
