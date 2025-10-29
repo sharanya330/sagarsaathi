@@ -1,8 +1,8 @@
 // Axios instance with environment-based base URL
 import axios from 'axios';
 
-// Prefer CRA env var, fallback to common local dev port 8000
-const BASE_URL = process.env.REACT_APP_API_BASE || 'http://localhost:8000';
+// Prefer CRA env var, fallback to local Docker backend on 5001
+const BASE_URL = process.env.REACT_APP_API_BASE || 'http://localhost:5001';
 
 const api = axios.create({
   baseURL: BASE_URL,
