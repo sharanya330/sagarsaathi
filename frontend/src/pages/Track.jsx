@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../utils/api';
 
@@ -8,7 +8,7 @@ export default function Track(){
   const [error, setError] = useState('');
   const [polling, setPolling] = useState(true);
 
-  const fetchLast = async () => {
+  const fetchLast = useCallback(async () => {
     try{
       const { data } = await api.get(`/api/trips/${id}/last_location`);
       setLast(data?.lastLocation || null);
@@ -16,14 +16,14 @@ export default function Track(){
     }catch(e){
       setError(e?.response?.data?.message || 'Failed to fetch location');
     }
-  };
+  }, [id]);
 
-  useEffect(()=>{ fetchLast(); },[id]);
+  useEffect(()=>{ fetchLast(); },[fetchLast]);
   useEffect(()=>{
     if(!polling) return;
     const t = setInterval(fetchLast, 10000);
     return () => clearInterval(t);
-  },[polling, id]);
+  },[polling, fetchLast]);
 
   const shareUrl = `${window.location.origin}/track/${id}`;
 

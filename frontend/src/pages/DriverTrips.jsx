@@ -101,7 +101,6 @@ export default function DriverTrips(){
                       <button onClick={async()=>{
                         try{
                           // Prefer Stripe if configured; fallback to dev paid
-                          const base = process.env.REACT_APP_API_BASE || '';
                           const { data } = await api.post(`/api/payments/lead_fee/create_session`, { tripId: t._id });
                           if (data?.url) { window.location.assign(data.url); return; }
                           // Fallback dev

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,7 +7,7 @@ export default function PublicTrack(){
   const [last, setLast] = useState(null);
   const [error, setError] = useState('');
 
-  const fetchLast = async () => {
+  const fetchLast = useCallback(async () => {
     try{
       const { data } = await axios.get(`/api/trips/public/${token}/last_location`);
       setLast(data?.lastLocation || null);
@@ -15,9 +15,9 @@ export default function PublicTrack(){
     }catch(e){
       setError(e?.response?.data?.message || 'Failed to fetch location');
     }
-  };
+  }, [token]);
 
-  useEffect(()=>{ fetchLast(); const t=setInterval(fetchLast,10000); return ()=>clearInterval(t); },[token]);
+  useEffect(()=>{ fetchLast(); const t=setInterval(fetchLast,10000); return ()=>clearInterval(t); },[fetchLast]);
 
   return (
     <div style={{maxWidth:600, margin:'20px auto', padding:20}}>
