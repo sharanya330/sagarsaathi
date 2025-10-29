@@ -25,12 +25,15 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000']; 
 const corsOptions = {
     origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or curl) or if the origin is in our allowed list
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        // Allow explicit list
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        // Allow ngrok preview links during development
+        if (/https?:\/\/.*\.ngrok-free\.app$/.test(origin)) return callback(null, true);
+        // Allow localhost on any port (useful for dev)
+        if (/https?:\/\/localhost(:\d+)?$/.test(origin)) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'));
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Allow cookies and auth headers to be sent
