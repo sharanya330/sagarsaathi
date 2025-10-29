@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: sagarsaathi-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: sagarsaathi
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - sagarsaathi-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    container_name: sagarsaathi-backend
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    environment:
+      NODE_ENV: production
+      PORT: 5001
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/sagarsaathi?authSource=admin
+      JWT_SECRET: sagarsaathi_secret_key_2024
+      JWT_EXPIRES_IN: 30d
+      ADMIN_EMAIL: admin@sagarsaathi.com
+      ADMIN_PASSWORD: admin123
+    depends_on:
+      - mongodb
+    networks:
+      - sagarsaathi-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: sagarsaathi-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    environment:
+      REACT_APP_API_URL: http://localhost:5001
+    depends_on:
+      - backend
+    networks:
+      - sagarsaathi-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  sagarsaathi-network:
+    driver: bridge
